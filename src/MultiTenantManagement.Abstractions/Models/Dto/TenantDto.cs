@@ -1,4 +1,4 @@
 ﻿namespace MultiTenantManagement.Abstractions.Models.Dto
 {
-    public record TenantDto(Guid Id, string ConnectionString);
+    public record TenantDto(Guid Id, string Name, string ConnectionString);
 }

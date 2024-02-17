@@ -2,7 +2,8 @@
 {
     public class LoginResponseDto
     {
-        public string? Token { get; set; }
-        public string? RefreshToken { get; set; }
+        public TokenDto? TokenDto { get; set; }
+        public IEnumerable<string>? Errors { get; set; }
+        public bool IsSuccess { get; set; }
     }
 }

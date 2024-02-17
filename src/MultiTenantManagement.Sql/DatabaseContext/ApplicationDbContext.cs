@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace MultiTenantManagement.Sql.DatabaseContext
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : BaseDbContext, IApplicationDbContext
     {
         private readonly Guid tenantId;
 

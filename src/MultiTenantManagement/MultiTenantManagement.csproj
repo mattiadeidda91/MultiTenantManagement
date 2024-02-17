@@ -14,4 +14,9 @@
     <ProjectReference Include="..\MultiTenantManagement.Dependencies\MultiTenantManagement.Dependencies.csproj" />
   </ItemGroup>
 
+	<!-- Exclude local appsettings -->
+	<ItemGroup>
+		<Content Update="appsettings.local.json" CopyToPublishDirectory="Never"></Content>
+	</ItemGroup>
+
 </Project>

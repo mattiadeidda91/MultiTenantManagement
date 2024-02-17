@@ -18,9 +18,9 @@ namespace MultiTenantManagement.Dependencies.Services
         private readonly IMemoryCache cache;
         private readonly IMapper mapper;
         private readonly ILogger<TenantService> logger;
-        private readonly AuthenticationDbContext authenticationDbContext;
+        private readonly IAuthenticationDbContext authenticationDbContext;
 
-        public TenantService(AuthenticationDbContext authenticationDbContext, IUserService userService, IConfiguration configuration, IMemoryCache cache, IMapper mapper, ILogger<TenantService> logger)
+        public TenantService(IAuthenticationDbContext authenticationDbContext, IUserService userService, IConfiguration configuration, IMemoryCache cache, IMapper mapper, ILogger<TenantService> logger)
         {
             this.authenticationDbContext = authenticationDbContext;
             this.userService = userService;
@@ -35,22 +35,21 @@ namespace MultiTenantManagement.Dependencies.Services
             //Create new Tenant
             if (tenantId == Guid.Empty)
             {
-                var databaseName = $"Tenant_{GenerateTenantName()}";
-
-                var connTemplate = configuration.GetConnectionString(ConnectionStrings.TenantConnectionTemplate);
-                var connectionString = string.Format(connTemplate!, databaseName);
+                (var databaseName, var connectionString) = GenerateConnectionString();
 
                 var tenant = new Tenant()
                 {
-                    //Cannot use User Id and Password, so leave like this and use the admin authentication(same credential for AuthDbContext) for prod
-                    ConnectionString = connectionString
+                    //Cannot use User Id and Password in the connectionString,
+                    //so leave like this and use the admin authentication(same credential for AuthDbContext) for prod
+                    ConnectionString = connectionString,
+                    Name= databaseName
                 };
 
-                authenticationDbContext.Tenants.Add(tenant);
+                authenticationDbContext.Insert(tenant);
 
-                await authenticationDbContext.SaveChangesAsync();
+                await authenticationDbContext.SaveAsync();
 
-                var isCreated = await CreateTenantDatabase(tenant.ConnectionString);
+                var isCreated = await CreateTenantDatabaseAsync(tenant.ConnectionString);
 
                 if (!isCreated)
                     logger.LogError("Cannot created database because it's already exists for database: {Database}", databaseName);
@@ -58,22 +57,37 @@ namespace MultiTenantManagement.Dependencies.Services
                 return new CreateTenantResponse
                 {
                     IsSuccess = isCreated,
-                    TenantId = tenant.Id,
+                    Tenant = mapper.Map<TenantDto>(tenant),
                     Errors = !isCreated ? new List<string>() { "Cannot created database because it's already exists for database: {Database}", databaseName } : null
                 };
             }
             else
             {
                 //Get existing Tenant
-                var checkTenantExist = await GetTenantByIdAsync(tenantId);
+                var dbTenant = await GetTenantByIdAsync(tenantId);
 
                 return new CreateTenantResponse()
                 {
-                    IsSuccess = checkTenantExist != null,
-                    TenantId = checkTenantExist?.Id ?? Guid.Empty,
-                    Errors = checkTenantExist == null ? new List<string>() { $"Register Failed! Tenant with Id: {tenantId} doesn't exist" } : null
+                    IsSuccess = dbTenant != null,
+                    Tenant = dbTenant,
+                    Errors = dbTenant == null ? new List<string>() { $"Register Failed! Tenant with Id: {tenantId} doesn't exist" } : null
                 };
             }
+        }
+
+        public async Task<bool> DeleteTenantAsync(TenantDto? tenant)
+        {
+            var deleteResult = false;
+
+            if (tenant != null)
+            {
+                deleteResult = await DeleteTenantDatabaseAsync(tenant.ConnectionString);
+
+                if (!deleteResult)
+                    logger.LogWarning("Cannot delete database because not found: {Database}", tenant.Name);
+            }
+
+            return deleteResult;
         }
 
         public async Task<TenantDto?> GetTenantByIdAsync(Guid tenantId)
@@ -83,7 +97,8 @@ namespace MultiTenantManagement.Dependencies.Services
                 return tenant;
             }
 
-            var tenantDb = await authenticationDbContext.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
+            var tenantDb = await authenticationDbContext.GetData<Tenant>().FirstOrDefaultAsync(t => t.Id == tenantId);
+            //var tenantDb = await authenticationDbContext.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
 
             return mapper.Map<TenantDto>(tenantDb);
         }
@@ -92,7 +107,7 @@ namespace MultiTenantManagement.Dependencies.Services
         {
             var tenants = cache.GetOrCreate(CacheKeys.tenants, entry =>
             {
-                var tenants = authenticationDbContext.Tenants?.ToList()?.ToDictionary(k => k.Id, v => new TenantDto(v.Id, v.ConnectionString!));
+                var tenants = authenticationDbContext.GetData<Tenant>().ToList()?.ToDictionary(k => k.Id, v => new TenantDto(v.Id, v.Name!, v.ConnectionString!));
 
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
                 return tenants;
@@ -107,14 +122,27 @@ namespace MultiTenantManagement.Dependencies.Services
             return null;
         }
 
-        public void ClearCache() => cache.Remove(CacheKeys.tenants);
-
-        private async Task<bool> CreateTenantDatabase(string connectionString)
+        private async Task<bool> DeleteTenantDatabaseAsync(string connectionString)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            var optionsBuilder = GeneratebContextOptionsBuilder(connectionString);
 
-            using var dbContext = new ApplicationDbContext(optionsBuilder.Options);
+            using var dbContext = new ApplicationDbContext(optionsBuilder);
+
+            var successDeletion = await dbContext.Database.EnsureDeletedAsync();
+
+            ClearCache();
+
+            return successDeletion;
+        }
+
+        public void ClearCache() 
+            => cache.Remove(CacheKeys.tenants);
+
+        private async Task<bool> CreateTenantDatabaseAsync(string connectionString)
+        {
+            var optionsBuilder = GeneratebContextOptionsBuilder(connectionString);
+
+            using var dbContext = new ApplicationDbContext(optionsBuilder);
             var successCreation = await dbContext.Database.EnsureCreatedAsync();
 
             if(successCreation)
@@ -128,6 +156,23 @@ namespace MultiTenantManagement.Dependencies.Services
         private static string GenerateTenantName()
         {
             return Utils.GenerateRamdomString(10, true);
+        }
+
+        private (string databaseName, string connectionString) GenerateConnectionString()
+        {
+            var databaseName = $"Tenant_{GenerateTenantName()}";
+
+            var connTemplate = configuration.GetConnectionString(ConnectionStrings.TenantConnectionTemplate)!;
+
+            return (databaseName, string.Format(connTemplate, databaseName));
+        } 
+
+        private DbContextOptions<ApplicationDbContext> GeneratebContextOptionsBuilder(string connectionString)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            return optionsBuilder.Options;
         }
     }
 }

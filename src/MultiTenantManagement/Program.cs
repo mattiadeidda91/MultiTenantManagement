@@ -8,20 +8,28 @@ using MultiTenantManagement.Abstractions.Requirements;
 using MultiTenantManagement.Abstractions.Services;
 using MultiTenantManagement.Abstractions.Utilities;
 using MultiTenantManagement.Dependencies.Services;
+using MultiTenantManagement.Filters;
 using MultiTenantManagement.Sql.DatabaseContext;
 using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Configure my appsettings.local.json
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+
 //Add Services
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthorizationHandler, UserActiveHandler>();
+builder.Services.AddScoped<IApplicationDbContext>(services => services.GetRequiredService<ApplicationDbContext>());
+builder.Services.AddScoped<IAuthenticationDbContext>(services => services.GetRequiredService<AuthenticationDbContext>());
 
 //Add Options
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(nameof(EmailOptions)));
 var jwtSection = builder.Configuration.GetSection(nameof(JwtOptions));
 builder.Services.Configure<JwtOptions>(jwtSection);
 var jwtOptions = jwtSection.Get<JwtOptions>();

@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Services;
 
 namespace MultiTenantManagement.Sql.DatabaseContext
 {
-    public class AuthenticationDbContext : 
-        IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole,
-            IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
+    public class AuthenticationDbContext : BaseIdentityDbContext, IAuthenticationDbContext
     {
         public DbSet<Tenant> Tenants { get; set; }
 
@@ -41,6 +38,7 @@ namespace MultiTenantManagement.Sql.DatabaseContext
                 tenant.HasKey(t => t.Id);
 
                 tenant.Property(t => t.Id).ValueGeneratedOnAdd();
+                tenant.Property(t => t.Name).IsRequired();
                 tenant.Property(t => t.ConnectionString).HasMaxLength(4000).IsRequired().IsUnicode(false);
             });
         }

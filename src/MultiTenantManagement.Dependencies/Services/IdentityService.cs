@@ -42,11 +42,25 @@ namespace MultiTenantManagement.Dependencies.Services
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
         {
-            var loginResponse = await signInManager.PasswordSignInAsync(loginRequestDto.Username, loginRequestDto.Password, false, false);
+            var loginResponse = await signInManager.PasswordSignInAsync(loginRequestDto.Username, loginRequestDto.Password, false, true);
 
             if (!loginResponse.Succeeded)
             {
-                return null;
+                var error = string.Empty;
+
+                if (loginResponse.IsLockedOut)
+                    error = "User Locked Out";
+                else if (loginResponse.IsNotAllowed)
+                    error = "User Not Allowed";
+
+                return new LoginResponseDto
+                {
+                    IsSuccess = false,
+                    Errors = new List<string>()
+                    {
+                       error
+                    }
+                };
             }
 
             var user = await userManager.FindByNameAsync(loginRequestDto.Username);
@@ -64,15 +78,19 @@ namespace MultiTenantManagement.Dependencies.Services
             .Union(userRoles.Select(role => new Claim(ClaimTypes.Role, role)))
             .ToList();
 
-            var loginResult = GenerateToken(claims);
+            var token = GenerateToken(claims);
 
             //Save Refresh token properties to DB
-            user.RefreshToken = loginResult.RefreshToken;
+            user.RefreshToken = token.RefreshToken;
             user.RefreshTokenExpirationDate = DateTime.UtcNow.AddMinutes(jwtOptions.RefreshTokenExpirationMinutes);
 
             _ = await userManager.UpdateAsync(user);
 
-            return loginResult;
+            return new LoginResponseDto
+            {
+                IsSuccess = true,
+                TokenDto = token
+            };
         }
 
         public async Task<LoginResponseDto> RefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequestDto)
@@ -95,14 +113,18 @@ namespace MultiTenantManagement.Dependencies.Services
                         return null;
                     }
 
-                    var loginResponse = GenerateToken(tokenValidation.ClaimsIdentity.Claims);
+                    var token = GenerateToken(tokenValidation.ClaimsIdentity.Claims);
 
-                    user!.RefreshToken = loginResponse.RefreshToken;
+                    user!.RefreshToken = token.RefreshToken;
                     user.RefreshTokenExpirationDate = DateTime.UtcNow.AddMinutes(jwtOptions.RefreshTokenExpirationMinutes);
 
                     _ = await userManager.UpdateAsync(user);
 
-                    return loginResponse;
+                    return new LoginResponseDto 
+                    { 
+                        IsSuccess = true,
+                        TokenDto = token
+                    };
                 }
             }
 
@@ -111,27 +133,30 @@ namespace MultiTenantManagement.Dependencies.Services
 
         public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto registerRequestDto)
         {
-            //TODO: La transazione non elimina il database, da eliminare probabilmente a mano
             using var transaction = authenticationDbContext.Database.BeginTransaction();
+            TenantDto? tenantDto = null;
 
             try
             {
-                var tenantId = registerRequestDto.TenantId ?? Guid.Empty;
+                var response = await tenantService.CreateTenantAsync(registerRequestDto.TenantId ?? Guid.Empty);
 
-                var response = await tenantService.CreateTenantAsync(tenantId);
                 if (response.IsSuccess)
-                    tenantId = response.TenantId;
+                {
+                    tenantDto = response.Tenant!;
+                }
                 else
                     return mapper.Map<RegisterResponseDto>(response);
 
                 var user = mapper.Map<ApplicationUser>(registerRequestDto);
-                user.TenantId = tenantId;
+                user.TenantId = tenantDto.Id;
 
                 var createdResult = await userManager.CreateAsync(user, registerRequestDto.Password);
 
                 if (!createdResult.Succeeded)
                 {
                     await transaction.RollbackAsync();
+                    await tenantService.DeleteTenantAsync(tenantDto);
+
                     return mapper.Map<RegisterResponseDto>(createdResult);
                 }
 
@@ -140,11 +165,16 @@ namespace MultiTenantManagement.Dependencies.Services
 
                 await transaction.CommitAsync();
 
-                return mapper.Map<RegisterResponseDto>(createdResult);
+                var result = mapper.Map<RegisterResponseDto>(createdResult);
+                result.User = user;
+
+                return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+
+                await tenantService.DeleteTenantAsync(tenantDto);
 
                 return new RegisterResponseDto
                 {
@@ -174,7 +204,7 @@ namespace MultiTenantManagement.Dependencies.Services
             return tokenValidation;
         }
 
-        private LoginResponseDto GenerateToken(IEnumerable<Claim> claims)
+        private TokenDto GenerateToken(IEnumerable<Claim> claims)
         {
             var symmetricSignature = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Signature!));
             var signingCredentials = new SigningCredentials(symmetricSignature, SecurityAlgorithms.HmacSha256Signature);
@@ -189,7 +219,7 @@ namespace MultiTenantManagement.Dependencies.Services
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-            return new LoginResponseDto
+            return new TokenDto
             {
                 Token = token,
                 RefreshToken = GenerateRefreshToken()
