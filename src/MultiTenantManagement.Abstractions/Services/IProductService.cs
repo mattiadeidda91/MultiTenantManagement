@@ -1,4 +1,4 @@
-﻿using MultiTenantManagement.Abstractions.Models.Dto;
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
 
 namespace MultiTenantManagement.Abstractions.Services
 {

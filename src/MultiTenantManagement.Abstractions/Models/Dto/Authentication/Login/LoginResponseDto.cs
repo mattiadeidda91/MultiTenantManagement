@@ -1,4 +1,6 @@
-﻿namespace MultiTenantManagement.Abstractions.Models.Dto
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
+
+namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login
 {
     public class LoginResponseDto
     {

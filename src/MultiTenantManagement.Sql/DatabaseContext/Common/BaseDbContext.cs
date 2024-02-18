@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MultiTenantManagement.Abstractions.Services;
 
-namespace MultiTenantManagement.Sql.DatabaseContext
+namespace MultiTenantManagement.Sql.DatabaseContext.Common
 {
     public abstract class BaseDbContext : DbContext, IRepository
     {

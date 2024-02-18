@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
-using MultiTenantManagement.Abstractions.Utility;
-using MultiTenantManagement.Filters;
+using MultiTenantManagement.Abstractions.Utilities.Costants;
+using MultiTenantManagement.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace MultiTenantManagement.Controllers
@@ -13,7 +13,6 @@ namespace MultiTenantManagement.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //TODO: Get all Users
         //TODO: To manage a generic API response
 
         private readonly UserManager<ApplicationUser> userManager;

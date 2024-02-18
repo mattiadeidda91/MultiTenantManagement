@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MultiTenantManagement.Abstractions.Models.Dto;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
 using MultiTenantManagement.Abstractions.Services;
 
 namespace MultiTenantManagement.Controllers

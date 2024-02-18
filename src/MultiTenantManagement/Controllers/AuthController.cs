@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MultiTenantManagement.Abstractions.Models.Dto;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.ForgotPassword;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.ResetPassword;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MultiTenantManagement.Abstractions.Models.Dto
+namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.ForgotPassword
 {
     public class ForgotPasswordDto
     {

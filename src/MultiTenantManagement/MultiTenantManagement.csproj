@@ -18,5 +18,9 @@
 	<ItemGroup>
 		<Content Update="appsettings.local.json" CopyToPublishDirectory="Never"></Content>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Filters\" />
+	  <Folder Include="Logs\" />
+	</ItemGroup>
 
 </Project>

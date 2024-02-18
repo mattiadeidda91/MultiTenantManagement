@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Dto;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
+using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Services;
 
 namespace MultiTenantManagement.Dependencies.Services

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using MultiTenantManagement.Abstractions.Models.Dto;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
+using MultiTenantManagement.Abstractions.Models.Entities.Application;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 
 namespace MultiTenantManagement.Mapper
 {

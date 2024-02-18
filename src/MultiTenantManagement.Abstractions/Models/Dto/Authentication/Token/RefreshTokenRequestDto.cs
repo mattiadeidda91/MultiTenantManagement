@@ -1,5 +1,5 @@
-﻿namespace MultiTenantManagement.Abstractions.Models.Dto
-{ 
+﻿namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token
+{
     public class RefreshTokenRequestDto
     {
         public string? Token { get; set; }

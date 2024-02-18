@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MultiTenantManagement.Abstractions.Models.Dto;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
 using MultiTenantManagement.Abstractions.Utilities;
+using MultiTenantManagement.Abstractions.Utilities.Costants;
 using MultiTenantManagement.Sql.DatabaseContext;
 
 namespace MultiTenantManagement.Dependencies.Services

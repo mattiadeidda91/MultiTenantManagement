@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using System.Security.Claims;
 
-namespace MultiTenantManagement.Abstractions.Requirements
+namespace MultiTenantManagement.Abstractions.Requirements.Handlers
 {
     public class UserActiveHandler : AuthorizationHandler<UserActiveRequirement>
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace MultiTenantManagement.Filters
+namespace MultiTenantManagement.Attributes
 {
     public class AuthRoleAttribute : AuthorizeAttribute
     {

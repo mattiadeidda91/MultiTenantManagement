@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace MultiTenantManagement.Abstractions.Services
+﻿namespace MultiTenantManagement.Abstractions.Services
 {
     public interface IRepository
     {

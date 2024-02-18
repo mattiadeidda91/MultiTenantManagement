@@ -1,4 +1,4 @@
-﻿namespace MultiTenantManagement.Abstractions.Utility
+﻿namespace MultiTenantManagement.Abstractions.Utilities.Costants
 {
     public static class CustomRoles
     {

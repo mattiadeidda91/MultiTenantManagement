@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Models.Entities.Common;
 using MultiTenantManagement.Abstractions.Services;
+using MultiTenantManagement.Sql.DatabaseContext.Common;
 using System.Reflection;
 
 #pragma warning disable S2219 // Runtime type checking should be simplified

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using MultiTenantManagement.Abstractions.Models.Entities;
 using MultiTenantManagement.Abstractions.Services;
 using Microsoft.EntityFrameworkCore;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 
-namespace MultiTenantManagement.Sql.DatabaseContext
+namespace MultiTenantManagement.Sql.DatabaseContext.Common
 {
     public abstract class BaseIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole,
             IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>, IRepository

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Entities;
+using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
+using MultiTenantManagement.Sql.DatabaseContext.Common;
 
 namespace MultiTenantManagement.Sql.DatabaseContext
 {

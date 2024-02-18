@@ -1,4 +1,6 @@
-﻿using MultiTenantManagement.Abstractions.Models.Dto;
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
+using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
 
 namespace MultiTenantManagement.Abstractions.Services
 {

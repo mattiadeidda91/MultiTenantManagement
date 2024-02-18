@@ -1,4 +1,4 @@
-﻿namespace MultiTenantManagement.Abstractions.Utilities
+﻿namespace MultiTenantManagement.Abstractions.Utilities.Costants
 {
     public static class CacheKeys
     {

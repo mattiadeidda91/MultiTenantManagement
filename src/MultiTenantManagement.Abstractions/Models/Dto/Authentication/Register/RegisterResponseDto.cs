@@ -1,6 +1,6 @@
-﻿using MultiTenantManagement.Abstractions.Models.Entities;
+﻿using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 
-namespace MultiTenantManagement.Abstractions.Models.Dto
+namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register
 {
     public class RegisterResponseDto
     {

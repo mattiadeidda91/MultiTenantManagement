@@ -1,7 +1,7 @@
 ﻿using MultiTenantManagement.Abstractions.Models.Entities.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace MultiTenantManagement.Abstractions.Models.Entities
+namespace MultiTenantManagement.Abstractions.Models.Entities.Application
 {
     public class Product : TenantEntity
     {

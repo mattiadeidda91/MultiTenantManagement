@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-namespace MultiTenantManagement.Abstractions.Models.Entities
+namespace MultiTenantManagement.Abstractions.Models.Entities.Authentication
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
