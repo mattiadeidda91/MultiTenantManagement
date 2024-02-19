@@ -7,7 +7,7 @@ namespace MultiTenantManagement.Abstractions.Extensions
 {
     public static class IdentityBuilderExtension
     {
-        public static IServiceCollection IdentityBuild<T>(this IServiceCollection services) where T : DbContext
+        public static IServiceCollection IdentityBuild<T>(this IServiceCollection services, bool isProduction) where T : DbContext
         {
             services.AddIdentity<ApplicationUser, ApplicationRole> (options =>
             {
@@ -19,7 +19,7 @@ namespace MultiTenantManagement.Abstractions.Extensions
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
 
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = isProduction;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
             })

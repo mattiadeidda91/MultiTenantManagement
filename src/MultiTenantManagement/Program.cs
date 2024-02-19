@@ -40,7 +40,7 @@ builder.Services.AddDbContext<AuthenticationDbContext>(options =>
 });
 
 //Add .Net Core Identity
-builder.Services.IdentityBuild<AuthenticationDbContext>();
+builder.Services.IdentityBuild<AuthenticationDbContext>(builder.Environment.IsProduction());
 
 //Add MultiTenant DbContext
 builder.Services.AddDbContext<ApplicationDbContext>((services, options) =>
@@ -65,6 +65,8 @@ builder.Services.AddControllers(options =>
 })
 .AddJsonOptions(options => 
 {
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
 });

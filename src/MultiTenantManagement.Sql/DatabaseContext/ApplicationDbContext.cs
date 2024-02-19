@@ -17,6 +17,24 @@ namespace MultiTenantManagement.Sql.DatabaseContext
 
         public DbSet<Product> Products { get; set; }
 
+        //public virtual DbSet<AnnoCorrente> AnnoCorrente { get; set; } = null!;
+        public virtual DbSet<Activity> Activities { get; set; } = null!;
+        //public virtual DbSet<Calendario> Calendario { get; set; } = null!;
+        //public virtual DbSet<Cassa> Cassa { get; set; } = null!;
+        public virtual DbSet<Certificate> Certificates { get; set; } = null!;
+        public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<CustomerActivity> CustomersActivities { get; set; } = null!;
+        public virtual DbSet<Invoice> Invoices { get; set; } = null!;
+        //public virtual DbSet<FattureStampate> FattureStampate { get; set; } = null!;
+        public virtual DbSet<HoursActivity> HoursActivities { get; set; } = null!;
+        //public virtual DbSet<ScadenzeAttività> ScadenzeAttività { get; set; } = null!;
+        public virtual DbSet<Site> Sites { get; set; } = null!;
+        public virtual DbSet<Rates> Rates { get; set; } = null!;
+        public virtual DbSet<RatesBase> RatesBase { get; set; } = null!;
+        public virtual DbSet<FederalCard> FederalCards { get; set; } = null!;
+        public virtual DbSet<MembershipCard> MembershipCards { get; set; } = null!;
+        //public virtual DbSet<Expense> Expenses { get; set; } = null!;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -43,6 +61,10 @@ namespace MultiTenantManagement.Sql.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Get All EntityConfigurations
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            //To check if move this in BaseEntityConfiguration
             var entities = modelBuilder.Model.GetEntityTypes()
                 .Where(t => typeof(TenantEntity).IsAssignableFrom(t.ClrType)).ToList();
 
