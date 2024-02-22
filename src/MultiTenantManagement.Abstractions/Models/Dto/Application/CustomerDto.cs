@@ -1,8 +1,9 @@
-﻿using MultiTenantManagement.Abstractions.Models.Entities.Common;
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Common;
+using MultiTenantManagement.Abstractions.Models.Entities.Application;
 
-namespace MultiTenantManagement.Abstractions.Models.Entities.Application
+namespace MultiTenantManagement.Abstractions.Models.Dto.Application
 {
-    public class Customer : TenantEntity
+    public class CustomerDto : BaseDto
     {
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -20,12 +21,12 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
-        public Guid SiteId { get; set; } //Use this to assign an already existing Site
+        public Guid SiteId { get; set; }
+        public SiteDto? Site { get; set; }
+        public ICollection<CertificateDto>? Certificates { get; set; }
+        public ICollection<ActivityDto>? Activities { get; set; }
+        public virtual ICollection<FederalCardDto>? FederalCards { get; set; }
+        public virtual ICollection<MembershipCardDto>? MembershipCards { get; set; }
 
-        public virtual Site? Site { get; set; } //Use this to create a new Site during Customer creation
-        public virtual ICollection<Certificate>? Certificates { get; set; }
-        public virtual ICollection<CustomerActivity> CustomersActivities { get; set; } = null!;
-        public virtual ICollection<FederalCard>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCard>? MembershipCards { get; set; }
     }
 }

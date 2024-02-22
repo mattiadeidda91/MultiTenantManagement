@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MultiTenantManagement.Abstractions.Models.Dto.Application;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
@@ -15,10 +17,12 @@ namespace MultiTenantManagement.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly IApplicationDbContext applicationDbContext;
+        private readonly IMapper mapper;
 
-        public CustomersController(UserManager<ApplicationUser> userManager, IApplicationDbContext applicationDbContext)
+        public CustomersController(UserManager<ApplicationUser> userManager, IApplicationDbContext applicationDbContext, IMapper mapper)
         {
             this.applicationDbContext = applicationDbContext;
+            this.mapper = mapper;
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
@@ -31,10 +35,12 @@ namespace MultiTenantManagement.Controllers
                 .Include(c => c.FederalCards)
                 .Include(c => c.MembershipCards)
                 .Include(c => c.CustomersActivities)
-                    //.ThenInclude(ca => ca.Activity)        
+                    .ThenInclude(ca => ca.Activity)        
                 .ToListAsync();
 
-            return StatusCode(customers != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, customers);
+            var results = mapper.Map<IEnumerable<CustomerDto>>(customers);
+
+            return StatusCode(customers != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, results);
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
@@ -50,8 +56,28 @@ namespace MultiTenantManagement.Controllers
                     .ThenInclude(ca => ca.Activity)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, customer);
+            var result = mapper.Map<CustomerDto>(customer);
+
+            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
+
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([Required] CustomerDto customerDto)
+        {
+            var user = mapper.Map<Customer>(customerDto);
+
+            if (user != null)
+            {
+                applicationDbContext.Insert(user);
+                await applicationDbContext.SaveAsync();
+
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpDelete]
