@@ -3,7 +3,8 @@ using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register
 {
-    public class RegisterResponseDto : ResponseBaseDto<ApplicationUser>
+    public class RegisterResponseDto : ResponseBaseDto
     {
+        public ApplicationUser? User { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MultiTenantManagement.Abstractions.Configurations.Options;
+using MultiTenantManagement.Abstractions.Logger;
 using MultiTenantManagement.Abstractions.Services;
 using System.Net;
 using System.Net.Mail;
@@ -48,7 +49,7 @@ namespace MultiTenantManagement.Dependencies.Services
             {
                 await serverSmtp.SendMailAsync(email);
 
-                logger.LogInformation($"Email '{subject}' sent to {string.Join(',',toEmails)}");
+                logger.LogEmailSentInfo(subject, string.Join(',', toEmails));
             }
             catch (SmtpException ex)
             {
