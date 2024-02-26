@@ -23,9 +23,11 @@ namespace MultiTenantManagement.Mapper
                 .ForMember(dst => dst.Errors, src => src.MapFrom(src => src.Errors.Select(e => e.Description)))
                 .ReverseMap();
 
+            _ = CreateMap<TenantDto, Tenant>().ReverseMap();
+
             _ = CreateMap<ProductDto, Product>().ReverseMap();
 
-            _ = CreateMap<TenantDto, Tenant>().ReverseMap();
+            _ = CreateMap<SiteDto, Site>().ReverseMap();
 
             _ = CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Activity)))
