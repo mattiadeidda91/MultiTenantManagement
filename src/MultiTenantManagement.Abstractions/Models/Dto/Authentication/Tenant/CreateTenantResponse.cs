@@ -1,9 +1,8 @@
-﻿namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Common;
+
+namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant
 {
-    public class CreateTenantResponse
+    public class CreateTenantResponse : ResponseBaseDto<TenantDto>
     {
-        public TenantDto? Tenant { get; set; }
-        public bool IsSuccess { get; set; }
-        public IEnumerable<string>? Errors { get; set; }
     }
 }

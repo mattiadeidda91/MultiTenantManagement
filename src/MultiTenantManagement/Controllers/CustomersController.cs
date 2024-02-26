@@ -61,6 +61,43 @@ namespace MultiTenantManagement.Controllers
             return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("customer-by-lastname")]
+        public async Task<IActionResult> GetUserByLastname([Required] string lastname)
+        {
+            var customer = await applicationDbContext.GetData<Customer>()
+                .Include(c => c.Site)
+                .Include(c => c.Certificates)
+                .Include(c => c.FederalCards)
+                .Include(c => c.MembershipCards)
+                .Include(c => c.CustomersActivities)
+                    .ThenInclude(ca => ca.Activity)
+                .Where(c => c.LastName.ToLowerInvariant().Contains(lastname.ToLowerInvariant()))
+                .ToListAsync();
+
+            var result = mapper.Map<CustomerDto>(customer);
+
+            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
+
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("customer-by-email")]
+        public async Task<IActionResult> GetUserByEmail([Required] string email)
+        {
+            var customer = await applicationDbContext.GetData<Customer>()
+                .Include(c => c.Site)
+                .Include(c => c.Certificates)
+                .Include(c => c.FederalCards)
+                .Include(c => c.MembershipCards)
+                .Include(c => c.CustomersActivities)
+                    .ThenInclude(ca => ca.Activity)
+                .FirstOrDefaultAsync(c => c.Email!.ToLowerInvariant().Trim() == email.ToLowerInvariant().Trim());
+
+            var result = mapper.Map<CustomerDto>(customer);
+
+            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
+
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]
         public async Task<IActionResult> CreateUser([Required] CustomerDto customerDto)
@@ -78,6 +115,28 @@ namespace MultiTenantManagement.Controllers
                 return NotFound();
         }
 
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([Required] CustomerDto customerDto)
+        {
+            var customer = await applicationDbContext.GetData<Customer>()
+                .FirstOrDefaultAsync(c => c.Id == customerDto.Id);
+
+            if (customer == null)
+                return NotFound();
+
+            var user = mapper.Map<Customer>(customerDto);
+
+            if (user != null)
+            {
+                applicationDbContext.Update(user);
+                await applicationDbContext.SaveAsync();
+
+                return Ok();
+            }
+            else
+                return BadRequest();
+        }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpDelete]

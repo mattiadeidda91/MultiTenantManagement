@@ -1,11 +1,9 @@
 ﻿using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
+using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login
 {
-    public class LoginResponseDto
+    public class LoginResponseDto : ResponseBaseDto<TokenDto>
     {
-        public TokenDto? TokenDto { get; set; }
-        public IEnumerable<string>? Errors { get; set; }
-        public bool IsSuccess { get; set; }
     }
 }

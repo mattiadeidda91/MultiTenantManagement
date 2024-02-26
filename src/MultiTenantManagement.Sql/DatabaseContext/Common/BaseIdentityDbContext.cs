@@ -31,6 +31,9 @@ namespace MultiTenantManagement.Sql.DatabaseContext.Common
         public void Insert<T>(T entity) where T : class
             => Set<T>().Add(entity);
 
+        public void Update<T>(T entity) where T : class
+            => Set<T>().Add(entity);
+
         public void Delete<T>(T entity) where T : class
             => Set<T>().Remove(entity);
 
