@@ -22,7 +22,7 @@ namespace MultiTenantManagement.Sql.Configurations
                 .WithMany(c => c.CustomersActivities)
                 .HasForeignKey(ca => ca.ActivityId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

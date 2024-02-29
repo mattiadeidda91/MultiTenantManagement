@@ -13,6 +13,7 @@ namespace MultiTenantManagement.Mapper
     {
         public Mapping()
         {
+            /* IDENTITY */
             _ = CreateMap<RegisterRequestDto, ApplicationUser>()
                 .ForMember(dst => dst.UserName, src => src.MapFrom(src => src.Email))
                 .ReverseMap();
@@ -25,23 +26,37 @@ namespace MultiTenantManagement.Mapper
 
             _ = CreateMap<TenantDto, Tenant>().ReverseMap();
 
-            _ = CreateMap<ProductDto, Product>().ReverseMap();//TODO: remove it
+            /* PRODUCTS */
+            _ = CreateMap<ProductDto, Product>().ReverseMap(); //TODO: remove it
 
+            /* CUSTOMERS */
             _ = CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Activity)))
                 .ReverseMap();
 
+            /* ACTIVITIES */
             _ = CreateMap<RequestActivity, Activity>().ReverseMap();
 
             _ = CreateMap<Activity, ActivityDto>()
                 .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Customer)))
                 .ReverseMap();
 
+            /* SITES */
             _ = CreateMap<SiteDto, Site>().ReverseMap();
+
+            /* RATES */
             _ = CreateMap<RatesDto, Rates>().ReverseMap();
+
+            /* CERTIFICATES */
             _ = CreateMap<CertificateDto, Certificate>().ReverseMap();
+
+            /* HOURS */
             _ = CreateMap<HoursActivityDto, HoursActivity>().ReverseMap();
+
+            /* FEDERAL CARDS */
             _ = CreateMap<FederalCardDto, FederalCard>().ReverseMap();
+
+            /* MEMBERSHIP CARDS */
             _ = CreateMap<MembershipCardDto, MembershipCard>().ReverseMap();
         }
     }

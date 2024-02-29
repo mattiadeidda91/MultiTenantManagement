@@ -12,7 +12,6 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
         public double Annual { get; set; }
 
         public Guid ActivityId { get; set; }
-        public Guid SiteId { get; set; }
         public string[]? DayOfWeek { get; set; } //TDB
 
         public virtual Activity Activity { get; set; } = null!;

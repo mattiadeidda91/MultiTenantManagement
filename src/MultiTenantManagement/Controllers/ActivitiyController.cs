@@ -90,7 +90,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]
-        public async Task<IActionResult> CreateActivity([Required] RequestActivity request)
+        public async Task<IActionResult> CreateActivity([Required] RequestActivity request) //TODO: create all request activity for all entities
         {
             var activity = mapper.Map<Activity>(request);
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MultiTenantManagement.Abstractions.Configurations.Options;
@@ -12,6 +13,7 @@ using MultiTenantManagement.Abstractions.Services;
 using MultiTenantManagement.Abstractions.Utilities;
 using MultiTenantManagement.Abstractions.Utilities.Costants;
 using MultiTenantManagement.Sql.DatabaseContext;
+using Serilog.Core;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,6 +28,7 @@ namespace MultiTenantManagement.Dependencies.Services
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ITenantService tenantService;
         private readonly IMapper mapper;
+        private readonly ILogger<IdentityService> logger;
 
         public IdentityService(
             IOptions<JwtOptions> jwtOptions,
@@ -33,7 +36,8 @@ namespace MultiTenantManagement.Dependencies.Services
             UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager, 
             ITenantService tenantService,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<IdentityService> logger)
         {
             this.jwtOptions = jwtOptions.Value;
             this.authenticationDbContext = authenticationDbContext;
@@ -41,6 +45,7 @@ namespace MultiTenantManagement.Dependencies.Services
             this.signInManager = signInManager;
             this.tenantService = tenantService;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
@@ -175,9 +180,11 @@ namespace MultiTenantManagement.Dependencies.Services
             }
             catch (Exception ex)
             {
+                logger.LogError("Tenant Database creation error! {Message}", ex.Message);
+
                 await transaction.RollbackAsync();
 
-                await tenantService.DeleteTenantAsync(tenantDto);
+                await tenantService.DeleteTenantAsync(tenantDto); //TODO: not works because tenantDto is null, check and fix it
 
                 return new RegisterResponseDto
                 {

@@ -16,11 +16,11 @@ namespace MultiTenantManagement.Sql.Configurations
             builder.Property(h => h.Day).HasMaxLength(30).IsRequired().IsUnicode(false);
             builder.Property(h => h.Hour).HasMaxLength(30).IsRequired().IsUnicode(false);
 
-            //builder.HasOne(h => h.Activity)
-            //    .WithMany(a => a.HoursActivities)
-            //    .HasForeignKey(h => h.ActivityId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(h => h.Activity)
+                .WithMany(a => a.HoursActivities)
+                .HasForeignKey(h => h.ActivityId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
