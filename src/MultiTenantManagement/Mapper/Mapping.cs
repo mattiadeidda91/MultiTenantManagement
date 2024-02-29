@@ -25,21 +25,24 @@ namespace MultiTenantManagement.Mapper
 
             _ = CreateMap<TenantDto, Tenant>().ReverseMap();
 
-            _ = CreateMap<ProductDto, Product>().ReverseMap();
-
-            _ = CreateMap<SiteDto, Site>().ReverseMap();
+            _ = CreateMap<ProductDto, Product>().ReverseMap();//TODO: remove it
 
             _ = CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Activity)))
                 .ReverseMap();
-            _ = CreateMap<ActivityDto, Activity>().ReverseMap();
-            _ = CreateMap<RatesBaseDto, RatesBase>().ReverseMap();
+
+            _ = CreateMap<RequestActivity, Activity>().ReverseMap();
+
+            _ = CreateMap<Activity, ActivityDto>()
+                .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Customer)))
+                .ReverseMap();
+
+            _ = CreateMap<SiteDto, Site>().ReverseMap();
             _ = CreateMap<RatesDto, Rates>().ReverseMap();
             _ = CreateMap<CertificateDto, Certificate>().ReverseMap();
             _ = CreateMap<HoursActivityDto, HoursActivity>().ReverseMap();
             _ = CreateMap<FederalCardDto, FederalCard>().ReverseMap();
             _ = CreateMap<MembershipCardDto, MembershipCard>().ReverseMap();
-            _ = CreateMap<SiteDto, Site>().ReverseMap();
         }
     }
 }

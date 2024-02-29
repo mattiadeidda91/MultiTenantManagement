@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.ForgotPassword;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
@@ -9,6 +10,12 @@ using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace MultiTenantManagement.Controllers
 {
@@ -17,12 +24,14 @@ namespace MultiTenantManagement.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly ILogger<AuthController> logger;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IIdentityService identityService;
         private readonly IEmailService emailService;
 
         public AuthController(UserManager<ApplicationUser> userManager, IIdentityService identityService, IEmailService emailService, ILogger<AuthController> logger)
         {
+            this.logger = logger;
             this.userManager = userManager;
             this.emailService = emailService;
             this.identityService = identityService;

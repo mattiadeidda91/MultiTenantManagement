@@ -6,5 +6,6 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application
     {
         public string CertificateNumber { get; set; } = null!;
         public DateTime CertificateExpireDate { get; set; }
+        public DateTime CertificateReleaseDate { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace MultiTenantManagement.Controllers
                 .Include(c => c.FederalCards)
                 .Include(c => c.MembershipCards)
                 .Include(c => c.CustomersActivities)
-                    .ThenInclude(ca => ca.Activity)        
+                    .ThenInclude(ca => ca.Activity)
                 .ToListAsync();
 
             var results = mapper.Map<IEnumerable<CustomerDto>>(customers);
@@ -45,7 +45,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("customer-by-id")]
-        public async Task<IActionResult> GetUserById([Required] Guid id)
+        public async Task<IActionResult> GetCustomerById([Required] Guid id)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Site)
@@ -62,8 +62,26 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("customer-by-site-id")]
+        public async Task<IActionResult> GetCustomerBySiteId([Required] Guid siteId)
+        {
+            var customer = await applicationDbContext.GetData<Customer>()
+                .Include(c => c.Site)
+                .Include(c => c.Certificates)
+                .Include(c => c.FederalCards)
+                .Include(c => c.MembershipCards)
+                .Include(c => c.CustomersActivities)
+                    .ThenInclude(ca => ca.Activity)
+                .FirstOrDefaultAsync(c => c.SiteId == siteId);
+
+            var result = mapper.Map<CustomerDto>(customer);
+
+            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
+
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("customer-by-lastname")]
-        public async Task<IActionResult> GetUserByLastname([Required] string lastname)
+        public async Task<IActionResult> GetCustomerByLastname([Required] string lastname)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Site)
@@ -82,7 +100,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("customer-by-email")]
-        public async Task<IActionResult> GetUserByEmail([Required] string email)
+        public async Task<IActionResult> GetCustomerByEmail([Required] string email)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Site)
@@ -100,7 +118,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]
-        public async Task<IActionResult> CreateUser([Required] CustomerDto customerDto)
+        public async Task<IActionResult> CreateCustomer([Required] CustomerDto customerDto)
         {
             var user = mapper.Map<Customer>(customerDto);
 
@@ -117,7 +135,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([Required] CustomerDto customerDto)
+        public async Task<IActionResult> UpdateCustomer([Required] CustomerDto customerDto)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .FirstOrDefaultAsync(c => c.Id == customerDto.Id);
@@ -140,7 +158,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([Required] Guid id)
+        public async Task<IActionResult> DeleteCustomer([Required] Guid id)
         {
             //TODO: To manage the logical deletion of the user or a control that if it is the only user associated with a specific tenant, then delete the associated tenant and the database
             var user = await applicationDbContext.GetData<Customer>().FirstOrDefaultAsync(c => c.Id == id);

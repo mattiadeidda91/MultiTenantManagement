@@ -30,7 +30,6 @@ namespace MultiTenantManagement.Sql.DatabaseContext
         //public virtual DbSet<ScadenzeAttività> ScadenzeAttività { get; set; } = null!;
         public virtual DbSet<Site> Sites { get; set; } = null!;
         public virtual DbSet<Rates> Rates { get; set; } = null!;
-        public virtual DbSet<RatesBase> RatesBase { get; set; } = null!;
         public virtual DbSet<FederalCard> FederalCards { get; set; } = null!;
         public virtual DbSet<MembershipCard> MembershipCards { get; set; } = null!;
         //public virtual DbSet<Expense> Expenses { get; set; } = null!;
