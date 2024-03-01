@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer.Request;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
@@ -117,9 +118,9 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer([Required] CustomerDto customerDto)
+        public async Task<IActionResult> CreateCustomer([Required] RequestCustomer request)
         {
-            var user = mapper.Map<Customer>(customerDto);
+            var user = mapper.Map<Customer>(request);
 
             if (user != null)
             {

@@ -21,7 +21,6 @@
 	<ItemGroup>
 	  <Folder Include="Models\Dto\Application\Activity\Response\" />
 	  <Folder Include="Models\Dto\Application\Customer\Response\" />
-	  <Folder Include="Models\Dto\Application\Customer\Request\" />
 	</ItemGroup>
 
 </Project>
