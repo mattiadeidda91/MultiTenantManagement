@@ -31,7 +31,7 @@ namespace MultiTenantManagement.Mapper
             _ = CreateMap<TenantDto, Tenant>().ReverseMap();
 
             /* PRODUCTS */
-            _ = CreateMap<ProductDto, Product>().ReverseMap(); //TODO: remove it
+            //_ = CreateMap<ProductDto, Product>().ReverseMap(); //TODO: remove it
 
             /* CUSTOMERS */
             _ = CreateMap<RequestCustomer, Customer>();

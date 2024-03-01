@@ -15,7 +15,7 @@ namespace MultiTenantManagement.Sql.DatabaseContext
     {
         private readonly Guid tenantId;
 
-        public DbSet<Product> Products { get; set; }
+        //public DbSet<Product> Products { get; set; } //TODO: remove it
 
         //public virtual DbSet<AnnoCorrente> AnnoCorrente { get; set; } = null!;
         public virtual DbSet<Activity> Activities { get; set; } = null!;
