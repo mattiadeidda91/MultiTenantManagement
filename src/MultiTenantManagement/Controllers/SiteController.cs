@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultiTenantManagement.Abstractions.Models.Dto.Application;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Services;
 using MultiTenantManagement.Abstractions.Utilities.Costants;
@@ -24,7 +26,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("sites")]
+        [HttpGet]
         public async Task<IActionResult> GetSites()
         {
             var sites = await applicationDbContext.GetData<Site>()
@@ -36,7 +38,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("site-by-id")]
+        [HttpGet("by-id")]
         public async Task<IActionResult> GetSiteById([Required] Guid id)
         {
             var site = await applicationDbContext.GetData<Site>()
@@ -48,7 +50,44 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("site-by-name")]
+        [HttpGet("{id}/customers")]
+        public async Task<IActionResult> GetCustomers(Guid id)
+        {
+            var customer = await applicationDbContext.GetData<Customer>()
+                .Include(c => c.Certificates)
+                .Include(c => c.FederalCards)
+                .Include(c => c.MembershipCards)
+                .Include(c => c.CustomersActivities)
+                    .ThenInclude(ca => ca.Activity)
+                .Where(c => c.SiteId == id)
+                .ToListAsync();
+
+            var result = mapper.Map<IEnumerable<CustomerWithoutSiteDto>>(customer);
+
+            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
+
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("{id}/activities")]
+        public async Task<IActionResult> GetActivities(Guid id)
+        {
+            var activity = await applicationDbContext.GetData<Activity>()
+                .Include(a => a.HoursActivities)
+                .Include(a => a.Rates)
+                .Include(a => a.CustomersActivities)
+                    .ThenInclude(ca => ca.Customer)
+                .Where(a => a.SiteId == id)
+                .ToListAsync();
+
+            var result = mapper.Map<IEnumerable<ActivityWithoutSiteDto>>(activity);
+
+            return StatusCode(activity != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
+
+        
+
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("by-name")]
         public async Task<IActionResult> GetSiteByName([Required] string name)
         {
             var site = await applicationDbContext.GetData<Site>()

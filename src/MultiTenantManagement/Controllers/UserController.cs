@@ -25,7 +25,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.Reader)]
-        [HttpGet("users")]
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var user = await authenticationDbContext.GetData<ApplicationUser>().OrderBy(u=> u.LastName).ToListAsync();
@@ -34,7 +34,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.Reader)]
-        [HttpGet("users-by-id")]
+        [HttpGet("by-id")]
         public async Task<IActionResult> GetUserById([Required] Guid id)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
@@ -43,7 +43,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.Reader)]
-        [HttpGet("user-by-username")]
+        [HttpGet("by-username")]
         public async Task<IActionResult> GetUserByUsername([Required] string username)
         {
             var user = await userManager.FindByEmailAsync(username);

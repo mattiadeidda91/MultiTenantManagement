@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Dto.Application;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
@@ -26,7 +26,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("customers")]
+        [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
             var customers = await applicationDbContext.GetData<Customer>()
@@ -44,7 +44,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("customer-by-id")]
+        [HttpGet("by-id")]
         public async Task<IActionResult> GetCustomerById([Required] Guid id)
         {
             var customer = await applicationDbContext.GetData<Customer>()
@@ -62,11 +62,10 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("customer-by-site-id")]
+        [HttpGet("by-site-id")]
         public async Task<IActionResult> GetCustomerBySiteId([Required] Guid siteId)
         {
             var customer = await applicationDbContext.GetData<Customer>()
-                .Include(c => c.Site)
                 .Include(c => c.Certificates)
                 .Include(c => c.FederalCards)
                 .Include(c => c.MembershipCards)
@@ -80,7 +79,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("customer-by-lastname")]
+        [HttpGet("by-lastname")]
         public async Task<IActionResult> GetCustomerByLastname([Required] string lastname)
         {
             var customer = await applicationDbContext.GetData<Customer>()
@@ -99,7 +98,7 @@ namespace MultiTenantManagement.Controllers
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("customer-by-email")]
+        [HttpGet("by-email")]
         public async Task<IActionResult> GetCustomerByEmail([Required] string email)
         {
             var customer = await applicationDbContext.GetData<Customer>()

@@ -65,6 +65,7 @@ builder.Services.AddControllers(options =>
 })
 .AddJsonOptions(options => 
 {
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

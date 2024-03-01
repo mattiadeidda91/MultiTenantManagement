@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using MultiTenantManagement.Abstractions.Models.Dto.Application;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity.Request;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
@@ -34,12 +37,26 @@ namespace MultiTenantManagement.Mapper
                 .ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Activity)))
                 .ReverseMap();
 
+            _ = CreateMap<Customer, CustomerWithoutSiteDto>()
+                .ForMember(dest => dest.Activities, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Activity)))
+                .ReverseMap();
+
+            _ = CreateMap<Customer, CustomerWithoutActivitiesDto>().ReverseMap();
+            _ = CreateMap<Customer, CustomerWithoutActivitiesAndSiteDto>().ReverseMap();
+
             /* ACTIVITIES */
             _ = CreateMap<RequestActivity, Activity>().ReverseMap();
 
             _ = CreateMap<Activity, ActivityDto>()
                 .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Customer)))
                 .ReverseMap();
+
+            _ = CreateMap<Activity, ActivityWithoutSiteDto>()
+                .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src.CustomersActivities.Select(ca => ca.Customer)))
+                .ReverseMap();
+
+            _ = CreateMap<Activity, ActivityWithoutCustomersAndSiteDto>().ReverseMap();
+            _ = CreateMap<Activity, ActivityWithoutCustomersDto>().ReverseMap();
 
             /* SITES */
             _ = CreateMap<SiteDto, Site>().ReverseMap();

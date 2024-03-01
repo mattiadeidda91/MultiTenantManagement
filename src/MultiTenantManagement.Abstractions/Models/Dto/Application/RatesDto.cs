@@ -1,4 +1,5 @@
-﻿using MultiTenantManagement.Abstractions.Models.Dto.Common;
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
+using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application
 {

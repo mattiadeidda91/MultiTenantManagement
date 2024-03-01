@@ -18,4 +18,10 @@
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models\Dto\Application\Activity\Response\" />
+	  <Folder Include="Models\Dto\Application\Customer\Response\" />
+	  <Folder Include="Models\Dto\Application\Customer\Request\" />
+	</ItemGroup>
+
 </Project>
