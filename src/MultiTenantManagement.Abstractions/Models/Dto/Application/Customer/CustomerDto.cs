@@ -1,4 +1,7 @@
 ﻿using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Certificate;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.FederalCard;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.MembershipCard;
 using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
@@ -22,12 +25,12 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
         public Guid SiteId { get; set; }
+
         public SiteDto? Site { get; set; }
-        public ICollection<CertificateDto>? Certificates { get; set; }
-        //public ICollection<ActivityDto>? Activities { get; set; }
+        public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardDto>? MembershipCards { get; set; }
+        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
     public class CustomerWithoutActivitiesDto : BaseDto
@@ -48,10 +51,11 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
+
         public SiteDto? Site { get; set; }
-        public ICollection<CertificateDto>? Certificates { get; set; }
-        public virtual ICollection<FederalCardDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardDto>? MembershipCards { get; set; }
+        public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
+        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
     public class CustomerWithoutSiteDto : BaseDto
@@ -72,10 +76,11 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
-        public ICollection<CertificateDto>? Certificates { get; set; }
+
+        public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardDto>? MembershipCards { get; set; }
+        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
     public class CustomerWithoutActivitiesAndSiteDto : BaseDto
@@ -96,8 +101,9 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
-        public ICollection<CertificateDto>? Certificates { get; set; }
-        public virtual ICollection<FederalCardDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardDto>? MembershipCards { get; set; }
+
+        public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
+        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 }

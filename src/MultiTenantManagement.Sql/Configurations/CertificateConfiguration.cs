@@ -16,11 +16,11 @@ namespace MultiTenantManagement.Sql.Configurations
             builder.Property(c => c.CertificateNumber).HasMaxLength(100).IsRequired().IsUnicode(false);
             builder.Property(c => c.CertificateExpireDate).HasMaxLength(10).HasColumnType("datetime").IsRequired();
 
-            //builder.HasOne(c => c.Customer)
-            //    .WithMany(s => s.Certificates)
-            //    .HasForeignKey(c => c.CustomerId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(c => c.Customer)
+                .WithMany(s => s.Certificates)
+                .HasForeignKey(c => c.CustomerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

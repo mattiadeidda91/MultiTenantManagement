@@ -9,6 +9,6 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
         public DateTime CardExpireDate { get; set; }
         public Guid CustomerId { get; set; }
 
-        //public virtual Customer Customer { get; set; } = null!;
+        public virtual Customer Customer { get; set; } = null!;
     }
 }

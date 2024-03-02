@@ -6,6 +6,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 {
     public class ActivityDto : BaseDto
     {
+        //TODO: Add property Active to Activity.
+
         public string Name { get; set; } = null!;
 
         public Site Site { get; set; } = null!;

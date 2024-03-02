@@ -17,11 +17,11 @@ namespace MultiTenantManagement.Sql.Configurations
             builder.Property(f => f.MembershipDate).HasMaxLength(10).HasColumnType("datetime").IsRequired();
             builder.Property(f => f.CardExpireDate).HasMaxLength(10).HasColumnType("datetime").IsRequired();
 
-            //builder.HasOne(f => f.Customer)
-            //   .WithMany(c => c.MembershipCards)
-            //   .HasForeignKey(f => f.CustomerId)
-            //   .IsRequired()
-            //   .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(f => f.Customer)
+               .WithMany(c => c.MembershipCards)
+               .HasForeignKey(f => f.CustomerId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

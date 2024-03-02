@@ -50,9 +50,22 @@ namespace MultiTenantManagement.Sql.DatabaseContext
             var entries = ChangeTracker.Entries()
                 .Where(e => typeof(TenantEntity).IsAssignableFrom(e.Entity.GetType()));
 
+            var currentTime = DateTime.UtcNow;
+
             foreach (var entry in entries.Where(e => e.State is EntityState.Added or EntityState.Modified))
             {
                 (entry.Entity as TenantEntity).TenantId = tenantId;
+
+                if (entry.State is EntityState.Added)
+                {
+                    entry.Property("InsertDate").CurrentValue = currentTime;
+                }
+                else
+                {
+                    entry.Property("InsertDate").IsModified = false;
+                }
+
+                entry.Property("UpdateDate").CurrentValue = currentTime;
             }
 
             return base.SaveChangesAsync(cancellationToken);

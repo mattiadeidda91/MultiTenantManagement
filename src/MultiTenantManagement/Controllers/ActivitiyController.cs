@@ -69,7 +69,7 @@ namespace MultiTenantManagement.Controllers
                    .ThenInclude(ca => ca.Customer)
                .FirstOrDefaultAsync(a => a.SiteId == siteId);
 
-            var result = mapper.Map<ActivityDto>(activity);
+            var result = mapper.Map<ActivityWithoutSiteDto>(activity);
 
             return StatusCode(activity != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }

@@ -5,6 +5,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application
 {
     public class RatesDto : BaseDto
     {
+        //Add Property Active to Rates
+
         public double Daily { get; set; }
         public double Weekly { get; set; }
         public double Monthly { get; set; }

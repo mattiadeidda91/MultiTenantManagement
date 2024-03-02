@@ -74,7 +74,7 @@ namespace MultiTenantManagement.Controllers
                     .ThenInclude(ca => ca.Activity)
                 .FirstOrDefaultAsync(c => c.SiteId == siteId);
 
-            var result = mapper.Map<CustomerDto>(customer);
+            var result = mapper.Map<CustomerWithoutSiteDto>(customer);
 
             return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
@@ -135,7 +135,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPut]
-        public async Task<IActionResult> UpdateCustomer([Required] CustomerDto customerDto)
+        public async Task<IActionResult> UpdateCustomer([Required] RequestCustomer customerDto)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .FirstOrDefaultAsync(c => c.Id == customerDto.Id);

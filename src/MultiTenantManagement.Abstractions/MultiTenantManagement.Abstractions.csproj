@@ -20,7 +20,10 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\Dto\Application\Activity\Response\" />
+	  <Folder Include="Models\Dto\Application\Certificate\Response\" />
 	  <Folder Include="Models\Dto\Application\Customer\Response\" />
+	  <Folder Include="Models\Dto\Application\FederalCard\Response\" />
+	  <Folder Include="Models\Dto\Application\MembershipCard\Response\" />
 	</ItemGroup>
 
 </Project>
