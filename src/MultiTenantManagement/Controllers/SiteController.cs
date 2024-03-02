@@ -51,7 +51,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("{id}/customers")]
-        public async Task<IActionResult> GetCustomers(Guid id)
+        public async Task<IActionResult> GetCustomers([Required] Guid id)
         {
             var customer = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Certificates)
@@ -69,7 +69,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("{id}/activities")]
-        public async Task<IActionResult> GetActivities(Guid id)
+        public async Task<IActionResult> GetActivities([Required] Guid id)
         {
             var activity = await applicationDbContext.GetData<Activity>()
                 .Include(a => a.HoursActivities)
@@ -91,7 +91,7 @@ namespace MultiTenantManagement.Controllers
         public async Task<IActionResult> GetSiteByName([Required] string name)
         {
             var site = await applicationDbContext.GetData<Site>()
-                .FirstOrDefaultAsync(c => c.Name!.ToLowerInvariant() == name.ToLowerInvariant());
+                .FirstOrDefaultAsync(c => c.Name!.ToLower() == name.ToLower());
 
             var result = mapper.Map<SiteDto>(site);
 

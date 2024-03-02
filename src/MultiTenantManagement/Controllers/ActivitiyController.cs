@@ -83,11 +83,11 @@ namespace MultiTenantManagement.Controllers
                 .Include(a => a.HoursActivities)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)
-                    .ThenInclude(ca => ca.Activity)
-                .Where(a => a.Name!.ToLowerInvariant().Contains(name.ToLowerInvariant()))
+                    .ThenInclude(ca => ca.Customer)
+                .Where(a => a.Name!.ToLower().Contains(name.ToLower()))
                 .ToListAsync();
 
-            var result = mapper.Map<ActivityDto>(activity);
+            var result = mapper.Map<IEnumerable<ActivityDto>>(activity);
 
             return StatusCode(activity != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }

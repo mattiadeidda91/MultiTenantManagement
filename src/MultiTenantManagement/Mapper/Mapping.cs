@@ -49,6 +49,8 @@ namespace MultiTenantManagement.Mapper
 
             _ = CreateMap<Customer, CustomerWithoutActivitiesDto>().ReverseMap();
             _ = CreateMap<Customer, CustomerWithoutActivitiesAndSiteDto>().ReverseMap();
+            _ = CreateMap<Customer, CustomerWithoutCertificatesDto>().ReverseMap();
+            _ = CreateMap<Customer, CustomerWithoutFederalCardsDto>().ReverseMap();
 
             /* ACTIVITIES */
             _ = CreateMap<RequestActivity, Activity>();

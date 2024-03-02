@@ -10,7 +10,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 
         public string Name { get; set; } = null!;
 
-        public Site Site { get; set; } = null!;
+        public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<RatesDto>? Rates { get; set; }
         public ICollection<HoursActivityDto>? HoursActivities { get; set; }
@@ -20,7 +20,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
     {
         public string Name { get; set; } = null!;
 
-        public Site Site { get; set; } = null!;
+        public SiteDto Site { get; set; } = null!;
         public ICollection<RatesDto>? Rates { get; set; }
         public ICollection<HoursActivityDto>? HoursActivities { get; set; }
     }

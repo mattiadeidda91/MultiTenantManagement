@@ -9,7 +9,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.MembershipCa
         public DateTime MembershipDate { get; set; }
         public DateTime CardExpireDate { get; set; }
 
-        public CustomerDto Customer { get; set; } = null!;
+        public CustomerWithoutMembershipCardsDto Customer { get; set; } = null!;
     }
 
     public class MembershipCardWithoutCustomerDto : BaseDto

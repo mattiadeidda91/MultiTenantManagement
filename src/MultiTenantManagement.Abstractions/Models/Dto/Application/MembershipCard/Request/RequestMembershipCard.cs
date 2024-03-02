@@ -2,6 +2,7 @@
 {
     public class RequestMembershipCard
     {
+        public Guid Id { get; set; }
         public string Card { get; set; } = null!;
         public DateTime MembershipDate { get; set; }
         public DateTime CardExpireDate { get; set; }

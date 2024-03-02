@@ -83,19 +83,19 @@ namespace MultiTenantManagement.Controllers
         [HttpGet("by-lastname")]
         public async Task<IActionResult> GetCustomerByLastname([Required] string lastname)
         {
-            var customer = await applicationDbContext.GetData<Customer>()
+            var customers = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Site)
                 .Include(c => c.Certificates)
                 .Include(c => c.FederalCards)
                 .Include(c => c.MembershipCards)
                 .Include(c => c.CustomersActivities)
                     .ThenInclude(ca => ca.Activity)
-                .Where(c => c.LastName.ToLowerInvariant().Contains(lastname.ToLowerInvariant()))
+                .Where(c => c.LastName.ToLower().Contains(lastname.ToLower()))
                 .ToListAsync();
 
-            var result = mapper.Map<CustomerDto>(customer);
+            var result = mapper.Map<IEnumerable<CustomerDto>>(customers);
 
-            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+            return StatusCode(customers != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
@@ -109,7 +109,7 @@ namespace MultiTenantManagement.Controllers
                 .Include(c => c.MembershipCards)
                 .Include(c => c.CustomersActivities)
                     .ThenInclude(ca => ca.Activity)
-                .FirstOrDefaultAsync(c => c.Email!.ToLowerInvariant().Trim() == email.ToLowerInvariant().Trim());
+                .FirstOrDefaultAsync(c => c.Email!.ToLower().Trim() == email.ToLower().Trim());
 
             var result = mapper.Map<CustomerDto>(customer);
 

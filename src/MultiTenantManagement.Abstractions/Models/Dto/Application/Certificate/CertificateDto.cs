@@ -9,7 +9,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Certificate
         public DateTime CertificateExpireDate { get; set; }
         public DateTime CertificateReleaseDate { get; set; }
 
-        public CustomerDto Customer { get; set; } = null!;
+        public CustomerWithoutCertificatesDto Customer { get; set; } = null!;
     }
 
     public class CertificateWithoutCustomerDto : BaseDto
