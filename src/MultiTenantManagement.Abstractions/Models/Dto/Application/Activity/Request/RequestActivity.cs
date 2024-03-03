@@ -1,4 +1,7 @@
-﻿namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity.Request
+﻿using MultiTenantManagement.Abstractions.Models.Dto.Application.Hours;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Rates;
+
+namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity.Request
 {
     public class RequestActivity
     {
@@ -6,6 +9,7 @@
         public Guid SiteId { get; set; }
         public Guid CustomerId { get; set; }
 
-        //TODO: Add Rates and Hours
+        public IEnumerable<RatesWithoutActivityDto>? Rates { get; set; }
+        public IEnumerable<HoursDto>? Hours { get; set; }
     }
 }

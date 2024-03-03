@@ -54,7 +54,7 @@ namespace MultiTenantManagement.Dependencies.Services
 
             if (!loginResponse.Succeeded)
             {
-                var error = string.Empty;
+                var error = "Login error! Check user and password";
 
                 if (loginResponse.IsLockedOut)
                     error = "User Locked Out";
@@ -163,7 +163,10 @@ namespace MultiTenantManagement.Dependencies.Services
                 if (!createdResult.Succeeded)
                 {
                     await transaction.RollbackAsync();
-                    await tenantService.DeleteTenantAsync(tenantDto);
+
+                    //Don't delete db if already exists -> case registration error for another user to existing db
+                    if (registerRequestDto.TenantId == null)
+                        await tenantService.DeleteTenantAsync(tenantDto);
 
                     return mapper.Map<RegisterResponseDto>(createdResult);
                 }
@@ -184,7 +187,13 @@ namespace MultiTenantManagement.Dependencies.Services
 
                 await transaction.RollbackAsync();
 
-                await tenantService.DeleteTenantAsync(tenantDto); //TODO: not works because tenantDto is null, check and fix it
+                //TODO: not works because tenantDto is null, check and fix it -> DB to create, don't already exists
+
+                //Don't delete db if already exists -> case registration error for another user to existing db
+                if (registerRequestDto.TenantId == null)
+                {
+                    await tenantService.DeleteTenantAsync(tenantDto);
+                }
 
                 return new RegisterResponseDto
                 {

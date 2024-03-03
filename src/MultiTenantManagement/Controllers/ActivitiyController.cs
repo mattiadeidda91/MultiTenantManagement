@@ -30,7 +30,7 @@ namespace MultiTenantManagement.Controllers
         {
             var activties = await applicationDbContext.GetData<Activity>()
                 .Include(a => a.Site)
-                .Include(a => a.HoursActivities)
+                .Include(a => a.Hours)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)!
                     .ThenInclude(ca => ca.Customer)
@@ -47,7 +47,7 @@ namespace MultiTenantManagement.Controllers
         {
             var activity = await applicationDbContext.GetData<Activity>()
                 .Include(a => a.Site)
-                .Include(a => a.HoursActivities)
+                .Include(a => a.Hours)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)
                     .ThenInclude(ca => ca.Customer)
@@ -63,7 +63,7 @@ namespace MultiTenantManagement.Controllers
         public async Task<IActionResult> GetActivityBySiteId([Required] Guid siteId)
         {
             var activity = await applicationDbContext.GetData<Activity>()
-               .Include(a => a.HoursActivities)
+               .Include(a => a.Hours)
                .Include(a => a.Rates)
                .Include(a => a.CustomersActivities)
                    .ThenInclude(ca => ca.Customer)
@@ -80,7 +80,7 @@ namespace MultiTenantManagement.Controllers
         {
             var activity = await applicationDbContext.GetData<Activity>()
                 .Include(a => a.Site)
-                .Include(a => a.HoursActivities)
+                .Include(a => a.Hours)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)
                     .ThenInclude(ca => ca.Customer)

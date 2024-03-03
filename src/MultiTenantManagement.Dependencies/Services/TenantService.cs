@@ -78,6 +78,8 @@ namespace MultiTenantManagement.Dependencies.Services
 
         public async Task<bool> DeleteTenantAsync(TenantDto? tenant)
         {
+            //TODO: remove association in Tenants table of IdentityAuthentication DB before to remove the database using the IdentityAuthentication connectionString
+
             var deleteResult = false;
 
             if (tenant != null)

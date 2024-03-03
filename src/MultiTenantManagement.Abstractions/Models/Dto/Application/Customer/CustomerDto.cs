@@ -2,6 +2,7 @@
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Certificate;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.FederalCard;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.MembershipCard;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer

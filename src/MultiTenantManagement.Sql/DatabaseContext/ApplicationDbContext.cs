@@ -26,7 +26,7 @@ namespace MultiTenantManagement.Sql.DatabaseContext
         public virtual DbSet<CustomerActivity> CustomersActivities { get; set; } = null!;
         public virtual DbSet<Invoice> Invoices { get; set; } = null!;
         //public virtual DbSet<FattureStampate> FattureStampate { get; set; } = null!;
-        public virtual DbSet<HoursActivity> HoursActivities { get; set; } = null!;
+        public virtual DbSet<Hours> Hours { get; set; } = null!;
         //public virtual DbSet<ScadenzeAttività> ScadenzeAttività { get; set; } = null!;
         public virtual DbSet<Site> Sites { get; set; } = null!;
         public virtual DbSet<Rates> Rates { get; set; } = null!;

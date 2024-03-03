@@ -23,7 +23,9 @@
 	  <Folder Include="Models\Dto\Application\Certificate\Response\" />
 	  <Folder Include="Models\Dto\Application\Customer\Response\" />
 	  <Folder Include="Models\Dto\Application\FederalCard\Response\" />
+	  <Folder Include="Models\Dto\Application\Hours\Response\" />
 	  <Folder Include="Models\Dto\Application\MembershipCard\Response\" />
+	  <Folder Include="Models\Dto\Application\Rates\Response\" />
 	</ItemGroup>
 
 </Project>

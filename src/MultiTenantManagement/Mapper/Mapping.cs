@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using MultiTenantManagement.Abstractions.Models.Dto.Application;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity.Request;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Certificate;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer.Request;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.FederalCard;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Hours;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.MembershipCard;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Rates;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
@@ -65,19 +67,23 @@ namespace MultiTenantManagement.Mapper
 
             _ = CreateMap<Activity, ActivityWithoutCustomersAndSiteDto>().ReverseMap();
             _ = CreateMap<Activity, ActivityWithoutCustomersDto>().ReverseMap();
+            _ = CreateMap<Activity, ActivityWithoutRatesDto>().ReverseMap();
+            _ = CreateMap<Activity, ActivityWithoutHoursDto>().ReverseMap();
 
             /* SITES */
             _ = CreateMap<SiteDto, Site>().ReverseMap();
 
             /* RATES */
             _ = CreateMap<RatesDto, Rates>().ReverseMap();
+            _ = CreateMap<RatesWithoutActivityDto, Rates>().ReverseMap();
 
             /* CERTIFICATES */
             _ = CreateMap<CertificateDto, Certificate>().ReverseMap();
             _ = CreateMap<CertificateWithoutCustomerDto, Certificate>().ReverseMap();
 
             /* HOURS */
-            _ = CreateMap<HoursActivityDto, HoursActivity>().ReverseMap();
+            _ = CreateMap<HoursDto, Hours>().ReverseMap();
+            _ = CreateMap<HoursWithoutActivityDto, Hours>().ReverseMap();
 
             /* FEDERAL CARDS */
             _ = CreateMap<FederalCardDto, FederalCard>().ReverseMap();

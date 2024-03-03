@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MultiTenantManagement.Abstractions.Models.Dto.Application;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Services;
 using MultiTenantManagement.Abstractions.Utilities.Costants;
@@ -72,7 +72,7 @@ namespace MultiTenantManagement.Controllers
         public async Task<IActionResult> GetActivities([Required] Guid id)
         {
             var activity = await applicationDbContext.GetData<Activity>()
-                .Include(a => a.HoursActivities)
+                .Include(a => a.Hours)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)
                     .ThenInclude(ca => ca.Customer)

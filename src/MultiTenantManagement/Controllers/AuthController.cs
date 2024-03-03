@@ -9,6 +9,7 @@ using MultiTenantManagement.Abstractions.Models.Dto.Authentication.ResetPassword
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Token;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
+using MultiTenantManagement.Template;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net.Security;
@@ -42,10 +43,10 @@ namespace MultiTenantManagement.Controllers
         {
             var loginResponse = await identityService.LoginAsync(loginRequest);
 
-            if (loginResponse != null)
+            if (loginResponse != null && loginResponse.Errors == null)
                 return Ok(loginResponse);
             else
-                return BadRequest();
+                return BadRequest(loginResponse);
         }
 
         [HttpPost("refresh")]
@@ -69,9 +70,10 @@ namespace MultiTenantManagement.Controllers
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(registerResponse.User!);
                 var callbackUrl = Url.RouteUrl("ConfirmEmail", new { userId = registerResponse.User!.Id, code = code }, HttpContext.Request.Scheme);
 
-                //TODO: Generate a email template
+                var template = EmailTemplate.ConfirmEmail.Replace("[confirmUrl]", callbackUrl);
+
                 //TODO: To set the URL of a front-end page which will then call the ConfirmEmail webApi and then redirect to the login
-                await emailService.SendEmailAsync("MultiTenant - Email Confirm", $"Confirm your account by clicking <a href='{callbackUrl}'>here</a>", new List<string>() { registerRequest.Email });
+                await emailService.SendEmailAsync("MultiTenant - Email Confirm", template, new List<string>() { registerRequest.Email });
             }
 
             return StatusCode(registerResponse.IsSuccess ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest,

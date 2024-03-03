@@ -10,6 +10,6 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
         public virtual Site Site { get; set; } = null!;
         public virtual ICollection<CustomerActivity> CustomersActivities { get; set; } = null!;
         public virtual ICollection<Rates>? Rates { get; set; }
-        public virtual ICollection<HoursActivity>? HoursActivities { get; set; }
+        public virtual ICollection<Hours>? Hours { get; set; }
     }
 }

@@ -5,19 +5,19 @@ using MultiTenantManagement.Sql.Configurations.Common;
 
 namespace MultiTenantManagement.Sql.Configurations
 {
-    public class HoursActivityConfiguration : BaseEntityConfiguration<HoursActivity> 
+    public class HoursConfiguration : BaseEntityConfiguration<Hours> 
     {
-        public override void Configure(EntityTypeBuilder<HoursActivity> builder)
+        public override void Configure(EntityTypeBuilder<Hours> builder)
         {
             base.Configure(builder);
 
-            builder.ToTable("HoursActivity");
+            builder.ToTable("Hours");
 
             builder.Property(h => h.Day).HasMaxLength(30).IsRequired().IsUnicode(false);
             builder.Property(h => h.Hour).HasMaxLength(30).IsRequired().IsUnicode(false);
 
             builder.HasOne(h => h.Activity)
-                .WithMany(a => a.HoursActivities)
+                .WithMany(a => a.Hours)
                 .HasForeignKey(h => h.ActivityId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

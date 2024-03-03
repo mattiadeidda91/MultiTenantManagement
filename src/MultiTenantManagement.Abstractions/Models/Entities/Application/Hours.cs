@@ -2,7 +2,7 @@
 
 namespace MultiTenantManagement.Abstractions.Models.Entities.Application
 {
-    public class HoursActivity : TenantEntity
+    public class Hours : TenantEntity
     {
         public string? Day { get; set; }
         public string? Hour { get; set; }

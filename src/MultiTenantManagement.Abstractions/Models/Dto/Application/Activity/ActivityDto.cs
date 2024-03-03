@@ -1,6 +1,8 @@
 ﻿using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Hours;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Rates;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Dto.Common;
-using MultiTenantManagement.Abstractions.Models.Entities.Application;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 {
@@ -12,8 +14,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
-        public ICollection<RatesDto>? Rates { get; set; }
-        public ICollection<HoursActivityDto>? HoursActivities { get; set; }
+        public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
+        public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
     public class ActivityWithoutCustomersDto : BaseDto
@@ -21,8 +23,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
         public string Name { get; set; } = null!;
 
         public SiteDto Site { get; set; } = null!;
-        public ICollection<RatesDto>? Rates { get; set; }
-        public ICollection<HoursActivityDto>? HoursActivities { get; set; }
+        public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
+        public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
     public class ActivityWithoutSiteDto : BaseDto
@@ -30,15 +32,37 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
         public string Name { get; set; } = null!;
 
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
-        public ICollection<RatesDto>? Rates { get; set; }
-        public ICollection<HoursActivityDto>? HoursActivities { get; set; }
+        public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
+        public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
     public class ActivityWithoutCustomersAndSiteDto : BaseDto
     {
         public string Name { get; set; } = null!;
 
-        public ICollection<RatesDto>? Rates { get; set; }
-        public ICollection<HoursActivityDto>? HoursActivities { get; set; }
+        public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
+        public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
+    }
+
+    public class ActivityWithoutRatesDto : BaseDto
+    {
+        //TODO: Add property Active to Activity.
+
+        public string Name { get; set; } = null!;
+
+        public SiteDto Site { get; set; } = null!;
+        public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
+        public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
+    }
+
+    public class ActivityWithoutHoursDto : BaseDto
+    {
+        //TODO: Add property Active to Activity.
+
+        public string Name { get; set; } = null!;
+
+        public SiteDto Site { get; set; } = null!;
+        public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
+        public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
     }
 }
