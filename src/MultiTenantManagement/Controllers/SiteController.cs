@@ -54,7 +54,7 @@ namespace MultiTenantManagement.Controllers
         [HttpGet("{id}/customers")]
         public async Task<IActionResult> GetCustomers([Required] Guid id)
         {
-            var customer = await applicationDbContext.GetData<Customer>()
+            var customers = await applicationDbContext.GetData<Customer>()
                 .Include(c => c.Certificates)
                 .Include(c => c.FederalCards)
                 .Include(c => c.MembershipCards)
@@ -63,16 +63,16 @@ namespace MultiTenantManagement.Controllers
                 .Where(c => c.SiteId == id)
                 .ToListAsync();
 
-            var result = mapper.Map<IEnumerable<CustomerWithoutSiteDto>>(customer);
+            var result = mapper.Map<IEnumerable<CustomerWithoutSiteDto>>(customers);
 
-            return StatusCode(customer != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+            return StatusCode(customers != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("{id}/activities")]
         public async Task<IActionResult> GetActivities([Required] Guid id)
         {
-            var activity = await applicationDbContext.GetData<Activity>()
+            var activities = await applicationDbContext.GetData<Activity>()
                 .Include(a => a.Hours)
                 .Include(a => a.Rates)
                 .Include(a => a.CustomersActivities)
@@ -80,9 +80,9 @@ namespace MultiTenantManagement.Controllers
                 .Where(a => a.SiteId == id)
                 .ToListAsync();
 
-            var result = mapper.Map<IEnumerable<ActivityWithoutSiteDto>>(activity);
+            var result = mapper.Map<IEnumerable<ActivityWithoutSiteDto>>(activities);
 
-            return StatusCode(activity != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+            return StatusCode(activities != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
@@ -149,7 +149,6 @@ namespace MultiTenantManagement.Controllers
             else
                 return BadRequest();
         }
-
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpDelete]
