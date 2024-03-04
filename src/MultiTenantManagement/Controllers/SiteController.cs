@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Expense;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Entities.Application;
 using MultiTenantManagement.Abstractions.Services;
@@ -84,7 +85,18 @@ namespace MultiTenantManagement.Controllers
             return StatusCode(activity != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
-        
+        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        [HttpGet("{id}/expenses")]
+        public async Task<IActionResult> GetExpenses([Required] Guid id)
+        {
+            var expenses = await applicationDbContext.GetData<Expense>()
+                .Where(a => a.SiteId == id)
+                .ToListAsync();
+
+            var result = mapper.Map<IEnumerable<ExpenseWithoutSiteDto>>(expenses);
+
+            return StatusCode(expenses != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        }
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet("by-name")]
