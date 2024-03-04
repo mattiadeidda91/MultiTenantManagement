@@ -5,10 +5,11 @@ using MultiTenantManagement.Abstractions.Models.Dto.Application.Activity.Request
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Certificate;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Customer.Request;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Expense;
+using MultiTenantManagement.Abstractions.Models.Dto.Application.Expense.Request;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.FederalCard;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Hours;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.MembershipCard;
-using MultiTenantManagement.Abstractions.Models.Dto.Application.Product;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Rates;
 using MultiTenantManagement.Abstractions.Models.Dto.Application.Site;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
@@ -92,6 +93,12 @@ namespace MultiTenantManagement.Mapper
             /* MEMBERSHIP CARDS */
             _ = CreateMap<MembershipCardDto, MembershipCard>().ReverseMap();
             _ = CreateMap<MembershipCardWithoutCustomerDto, MembershipCard>().ReverseMap();
+
+            /* EXPENSES */
+            _ = CreateMap<RequestExpense, Expense>();
+
+            _ = CreateMap<Expense, ExpenseDto>().ReverseMap();
+            _ = CreateMap<Expense, ExpenseWithoutSiteDto>().ReverseMap();
         }
     }
 }

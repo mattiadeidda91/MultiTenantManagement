@@ -65,19 +65,19 @@ namespace MultiTenantManagement.Controllers
             return StatusCode(rates != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
         }
 
-        [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
-        [HttpGet("by-day")]
-        public async Task<IActionResult> GetRateByName([Required] DayOfWeek day)
-        {
-            var rates = await applicationDbContext.GetData<Rates>()
-                .Include(c => c.Activity)
-                .Where(r => r.DayOfWeek != null && r.DayOfWeek.Contains(day.GetDisplayName()))
-                .ToListAsync();
+        //[AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
+        //[HttpGet("by-day")]
+        //public async Task<IActionResult> GetRateByName([Required] DayOfWeek day)
+        //{
+        //    var rates = await applicationDbContext.GetData<Rates>()
+        //        .Include(c => c.Activity)
+        //        .Where(r => r.DayOfWeek != null && r.DayOfWeek.Contains(day.GetDisplayName()))
+        //        .ToListAsync();
 
-            var result = mapper.Map<IEnumerable<RatesDto>>(rates);
+        //    var result = mapper.Map<IEnumerable<RatesDto>>(rates);
 
-            return StatusCode(result != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
-        }
+        //    return StatusCode(result != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, result);
+        //}
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]

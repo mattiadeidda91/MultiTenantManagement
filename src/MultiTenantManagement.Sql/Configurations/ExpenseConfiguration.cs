@@ -15,9 +15,8 @@ namespace MultiTenantManagement.Sql.Configurations
 
             builder.Property(e => e.Price).IsRequired();
             builder.Property(e => e.PaymentDate).IsRequired();
-            builder.Property(e => e.Recipient).HasMaxLength(200).IsRequired().IsUnicode(false);
+            builder.Property(e => e.Recipient).HasMaxLength(255).IsRequired().IsUnicode(false);
             builder.Property(e => e.Description).HasMaxLength(int.MaxValue).IsUnicode(false);
-
         }
     }
 }

@@ -14,12 +14,12 @@ namespace MultiTenantManagement.Sql.Configurations
 
             builder.ToTable("Rates");
 
-            builder.Property(r => r.DayOfWeek)
-                .HasMaxLength(int.MaxValue)
-                .HasConversion(
-                    c => JsonSerializer.Serialize(c, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }),
-                    c => JsonSerializer.Deserialize<string[]>(c, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-                );
+            //builder.Property(r => r.DayOfWeek)
+            //    .HasMaxLength(int.MaxValue)
+            //    .HasConversion(
+            //        c => JsonSerializer.Serialize(c, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }),
+            //        c => JsonSerializer.Deserialize<string[]>(c, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            //    );
 
             builder.HasOne(r => r.Activity)
                 .WithMany(a => a.Rates)

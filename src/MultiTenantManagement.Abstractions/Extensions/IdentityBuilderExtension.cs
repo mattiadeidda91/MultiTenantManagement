@@ -12,7 +12,6 @@ namespace MultiTenantManagement.Abstractions.Extensions
             services.AddIdentity<ApplicationUser, ApplicationRole> (options =>
             {
                 options.User.RequireUniqueEmail = true;
-                //options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = true;

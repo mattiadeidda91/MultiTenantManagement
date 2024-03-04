@@ -78,8 +78,6 @@ namespace MultiTenantManagement.Dependencies.Services
 
         public async Task<bool> DeleteTenantAsync(TenantDto? tenant)
         {
-            //TODO: remove association in Tenants table of IdentityAuthentication DB before to remove the database using the IdentityAuthentication connectionString
-
             var deleteResult = false;
 
             if (tenant != null)
@@ -88,6 +86,19 @@ namespace MultiTenantManagement.Dependencies.Services
 
                 if (!deleteResult)
                     logger.LogWarning("Cannot delete database because not found: {Database}", tenant.Name);
+                else
+                {
+                    var tenantDb = await authenticationDbContext.GetData<Tenant>().FirstOrDefaultAsync(t => t.Id == tenant.Id);
+
+                    if(tenantDb != null)
+                    {
+                        //TODO: proprably not works, beacuase it needs to remove associated users before.
+                        authenticationDbContext.Delete(tenantDb);
+                        await authenticationDbContext.SaveAsync();
+                    }
+                    else
+                        logger.LogWarning("Cannot delete tenant because not found: {Database}", tenant.Name);
+                }
             }
 
             return deleteResult;
