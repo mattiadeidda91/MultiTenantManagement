@@ -5,6 +5,7 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
     public class Activity : TenantEntity
     {
         public string? Name { get; set; }
+        public bool IsActive { get; set; }
         public Guid SiteId { get; set; }
 
         public virtual Site Site { get; set; } = null!;

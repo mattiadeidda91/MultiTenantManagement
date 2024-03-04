@@ -8,9 +8,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 {
     public class ActivityDto : BaseDto
     {
-        //TODO: Add property Active to Activity.
-
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
@@ -21,6 +20,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
     public class ActivityWithoutCustomersDto : BaseDto
     {
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public SiteDto Site { get; set; } = null!;
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
@@ -30,6 +30,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
     public class ActivityWithoutSiteDto : BaseDto
     {
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
@@ -39,6 +40,7 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
     public class ActivityWithoutCustomersAndSiteDto : BaseDto
     {
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
@@ -46,9 +48,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 
     public class ActivityWithoutRatesDto : BaseDto
     {
-        //TODO: Add property Active to Activity.
-
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
@@ -57,9 +58,8 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 
     public class ActivityWithoutHoursDto : BaseDto
     {
-        //TODO: Add property Active to Activity.
-
         public string Name { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }

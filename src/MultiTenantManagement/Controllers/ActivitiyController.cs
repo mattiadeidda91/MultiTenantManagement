@@ -26,17 +26,31 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User, CustomRoles.Reader)]
         [HttpGet]
-        public async Task<IActionResult> GetActivities()
+        public async Task<IActionResult> GetActivities(bool? isActive)
         {
-            var activties = await applicationDbContext.GetData<Activity>()
+            var query = applicationDbContext.GetData<Activity>()
                 .Include(a => a.Site)
                 .Include(a => a.Hours)
                 .Include(a => a.Rates)
-                .Include(a => a.CustomersActivities)!
-                    .ThenInclude(ca => ca.Customer)
-                .ToListAsync();
+                .Include(a => a.CustomersActivities)
+                    .ThenInclude(ca => ca.Customer) as IQueryable<Activity>;
 
-            var results = mapper.Map<IEnumerable<ActivityDto>>(activties);
+            if (isActive.HasValue)
+            {
+                query = query.Where(a => a.IsActive == isActive.Value);
+            }
+
+            var activities = await query.ToListAsync();
+
+            //var activities = await applicationDbContext.GetData<Activity>()
+            //    .Include(a => a.Site)
+            //    .Include(a => a.Hours)
+            //    .Include(a => a.Rates)
+            //    .Include(a => a.CustomersActivities)!
+            //        .ThenInclude(ca => ca.Customer)
+            //    .ToListAsync();
+
+            var results = mapper.Map<IEnumerable<ActivityDto>>(activities);
 
             return StatusCode(results != null ? StatusCodes.Status200OK : StatusCodes.Status404NotFound, results);
         }
@@ -94,7 +108,7 @@ namespace MultiTenantManagement.Controllers
 
         [AuthRole(CustomRoles.Administrator, CustomRoles.User)]
         [HttpPost]
-        public async Task<IActionResult> CreateActivity([Required] RequestActivity request) //TODO: create all request activity for all entities
+        public async Task<IActionResult> CreateActivity([Required] RequestActivity request)
         {
             var activity = mapper.Map<Activity>(request);
 

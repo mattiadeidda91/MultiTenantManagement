@@ -13,8 +13,6 @@ namespace MultiTenantManagement.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //TODO: To manage a generic API response
-
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IAuthenticationDbContext authenticationDbContext;
 

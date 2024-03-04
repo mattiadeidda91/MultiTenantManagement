@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MultiTenantManagement.Abstractions.Logger;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
 using MultiTenantManagement.Abstractions.Models.Entities.Authentication;
 using MultiTenantManagement.Abstractions.Services;
@@ -53,7 +54,7 @@ namespace MultiTenantManagement.Dependencies.Services
                 var isCreated = await CreateTenantDatabaseAsync(tenant.ConnectionString);
 
                 if (!isCreated)
-                    logger.LogError("Cannot created database because it's already exists for database: {Database}", databaseName);
+                    logger.LogDatabaseCreationError(databaseName);
 
                 return new CreateTenantResponse
                 {
@@ -85,7 +86,7 @@ namespace MultiTenantManagement.Dependencies.Services
                 deleteResult = await DeleteTenantDatabaseAsync(tenant.ConnectionString);
 
                 if (!deleteResult)
-                    logger.LogWarning("Cannot delete database because not found: {Database}", tenant.Name);
+                    logger.LogDatabaseDeletionWarning(tenant.Name);
                 else
                 {
                     var tenantDb = await authenticationDbContext.GetData<Tenant>().FirstOrDefaultAsync(t => t.Id == tenant.Id);
@@ -97,7 +98,7 @@ namespace MultiTenantManagement.Dependencies.Services
                         await authenticationDbContext.SaveAsync();
                     }
                     else
-                        logger.LogWarning("Cannot delete tenant because not found: {Database}", tenant.Name);
+                        logger.LogTenantDeletionWarning(tenant.Name);
                 }
             }
 
@@ -112,7 +113,6 @@ namespace MultiTenantManagement.Dependencies.Services
             }
 
             var tenantDb = await authenticationDbContext.GetData<Tenant>().FirstOrDefaultAsync(t => t.Id == tenantId);
-            //var tenantDb = await authenticationDbContext.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
 
             return mapper.Map<TenantDto>(tenantDb);
         }

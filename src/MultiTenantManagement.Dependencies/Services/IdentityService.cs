@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MultiTenantManagement.Abstractions.Configurations.Options;
+using MultiTenantManagement.Abstractions.Logger;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Login;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Register;
 using MultiTenantManagement.Abstractions.Models.Dto.Authentication.Tenant;
@@ -165,7 +166,7 @@ namespace MultiTenantManagement.Dependencies.Services
                     await transaction.RollbackAsync();
 
                     //Don't delete db if already exists -> case registration error for another user to existing db
-                    if (registerRequestDto.TenantId == null)
+                    if (registerRequestDto.TenantId is null)
                         await tenantService.DeleteTenantAsync(tenantDto);
 
                     return mapper.Map<RegisterResponseDto>(createdResult);
@@ -183,14 +184,14 @@ namespace MultiTenantManagement.Dependencies.Services
             }
             catch (Exception ex)
             {
-                logger.LogError("Tenant Database creation error! {Message}", ex.Message);
+                logger.LogTenantCreationError(ex.Message);
 
                 await transaction.RollbackAsync();
 
-                //TODO: not works because tenantDto is null, check and fix it -> DB to create, don't already exists
+                //TODO: not works because tenantDto is null, check and fix it
 
                 //Don't delete db if already exists -> case registration error for another user to existing db
-                if (registerRequestDto.TenantId == null)
+                if (registerRequestDto.TenantId is null)
                 {
                     await tenantService.DeleteTenantAsync(tenantDto);
                 }
