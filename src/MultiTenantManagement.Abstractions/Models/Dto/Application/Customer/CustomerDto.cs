@@ -7,7 +7,32 @@ using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
 {
-    public class CustomerDto : BaseDto
+    public interface ISite
+    {
+        public SiteDto? Site { get; set; }
+    }
+
+    public interface ICertificate
+    {
+        public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
+    }
+
+    public interface IActivities
+    {
+        public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
+    }
+
+    public interface IFederalCards
+    {
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+    }
+
+    public interface IMembershipCards
+    {
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+    }
+
+    public class CustomerBaseDto : BaseDto
     {
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -21,168 +46,67 @@ namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Customer
         public string? City { get; set; }
         public string? PostalCode { get; set; }
         public string? FiscalCode { get; set; }
+        public string? VatNumber { get; set; }
+        public string? Company { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
-        public Guid SiteId { get; set; }
+    }
 
+    public class CustomerDto : CustomerBaseDto, ISite, ICertificate, IActivities, IFederalCards, IMembershipCards
+    {
         public SiteDto? Site { get; set; }
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutActivitiesDto : BaseDto
+    public class CustomerWithoutActivitiesDto : CustomerBaseDto, ISite, ICertificate, IFederalCards, IMembershipCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-
         public SiteDto? Site { get; set; }
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutSiteDto : BaseDto
+    public class CustomerWithoutSiteDto : CustomerBaseDto, ICertificate, IActivities, IFederalCards, IMembershipCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutActivitiesAndSiteDto : BaseDto
+    public class CustomerWithoutActivitiesAndSiteDto : CustomerBaseDto, ICertificate, IFederalCards, IMembershipCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutCertificatesDto
+    public class CustomerWithoutCertificatesDto : CustomerBaseDto, ISite, IActivities, IFederalCards, IMembershipCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-        public Guid SiteId { get; set; }
-
         public SiteDto? Site { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutFederalCardsDto : BaseDto
+    public class CustomerWithoutFederalCardsDto : CustomerBaseDto, ISite, ICertificate, IActivities, IMembershipCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-        public Guid SiteId { get; set; }
-
         public SiteDto? Site { get; set; }
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
+        public ICollection<MembershipCardWithoutCustomerDto>? MembershipCards { get; set; }
     }
 
-    public class CustomerWithoutMembershipCardsDto : BaseDto
+    public class CustomerWithoutMembershipCardsDto : CustomerBaseDto, ISite, ICertificate, IActivities, IFederalCards
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public DateTime BirthDate { get; set; }
-        public string? BirthPlace { get; set; }
-        public string? BirthProvince { get; set; }
-        public string? Gender { get; set; }
-        public string? Address { get; set; }
-        public string? Region { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? PostalCode { get; set; }
-        public string? FiscalCode { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public string? MobilePhone { get; set; }
-        public string? Note { get; set; }
-        public Guid SiteId { get; set; }
-
         public SiteDto? Site { get; set; }
         public ICollection<CertificateWithoutCustomerDto>? Certificates { get; set; }
         public ICollection<ActivityWithoutCustomersAndSiteDto>? Activities { get; set; }
-        public virtual ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
+        public ICollection<FederalCardWithoutCustomerDto>? FederalCards { get; set; }
     }
 }

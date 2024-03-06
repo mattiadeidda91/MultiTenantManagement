@@ -16,13 +16,15 @@ namespace MultiTenantManagement.Abstractions.Models.Entities.Application
         public string? City { get; set; }
         public string? PostalCode { get; set; }
         public string? FiscalCode { get; set; }
+        public string? VatNumber { get; set; }
+        public string? Company { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? MobilePhone { get; set; }
         public string? Note { get; set; }
-        public Guid SiteId { get; set; } //Use this to assign an already existing Site
+        public Guid SiteId { get; set; }
 
-        public virtual Site? Site { get; set; } //Use this to create a new Site during Customer creation
+        public virtual Site? Site { get; set; }
         public virtual ICollection<Certificate>? Certificates { get; set; }
         public virtual ICollection<CustomerActivity> CustomersActivities { get; set; } = null!;
         public virtual ICollection<FederalCard>? FederalCards { get; set; }

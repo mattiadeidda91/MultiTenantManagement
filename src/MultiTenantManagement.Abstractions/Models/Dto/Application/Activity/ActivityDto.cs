@@ -6,61 +6,49 @@ using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Activity
 {
-    public class ActivityDto : BaseDto
+    public class ActivityBaseDto : BaseDto
     {
         public string Name { get; set; } = null!;
         public bool IsActive { get; set; }
+    }
 
+    public class ActivityDto : ActivityBaseDto
+    {
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
-    public class ActivityWithoutCustomersDto : BaseDto
+    public class ActivityWithoutCustomersDto : ActivityBaseDto
     {
-        public string Name { get; set; } = null!;
-        public bool IsActive { get; set; }
-
         public SiteDto Site { get; set; } = null!;
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
-    public class ActivityWithoutSiteDto : BaseDto
+    public class ActivityWithoutSiteDto : ActivityBaseDto
     {
-        public string Name { get; set; } = null!;
-        public bool IsActive { get; set; }
-
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
-    public class ActivityWithoutCustomersAndSiteDto : BaseDto
+    public class ActivityWithoutCustomersAndSiteDto : ActivityBaseDto
     {
-        public string Name { get; set; } = null!;
-        public bool IsActive { get; set; }
-
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
-    public class ActivityWithoutRatesDto : BaseDto
+    public class ActivityWithoutRatesDto : ActivityBaseDto
     {
-        public string Name { get; set; } = null!;
-        public bool IsActive { get; set; }
-
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<HoursWithoutActivityDto>? Hours { get; set; }
     }
 
-    public class ActivityWithoutHoursDto : BaseDto
+    public class ActivityWithoutHoursDto : ActivityBaseDto
     {
-        public string Name { get; set; } = null!;
-        public bool IsActive { get; set; }
-
         public SiteDto Site { get; set; } = null!;
         public ICollection<CustomerWithoutActivitiesAndSiteDto>? Customers { get; set; }
         public ICollection<RatesWithoutActivityDto>? Rates { get; set; }

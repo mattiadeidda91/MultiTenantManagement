@@ -3,17 +3,18 @@ using MultiTenantManagement.Abstractions.Models.Dto.Common;
 
 namespace MultiTenantManagement.Abstractions.Models.Dto.Application.Hours
 {
-    public class HoursDto : BaseDto
+    public class HoursBaseDto : BaseDto
     {
         public string? Day { get; set; }
         public string? Hour { get; set; }
+    }
 
+    public class HoursDto : HoursBaseDto
+    {
         public ActivityWithoutHoursDto Activity { get; set; } = null!;
     }
 
-    public class HoursWithoutActivityDto : BaseDto
+    public class HoursWithoutActivityDto : HoursBaseDto
     {
-        public string? Day { get; set; }
-        public string? Hour { get; set; }
     }
 }
